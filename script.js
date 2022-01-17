@@ -19,7 +19,7 @@ function getStackTrace() {
 function alertSend(action, messages) {
     var myDate = new Date();
     var _time = myDate.getFullYear() + "-" + myDate.getMonth() + "-" + myDate.getDate() + " " + myDate.getHours() + ":" + myDate.getMinutes() + ":" + myDate.getSeconds();
-    send({"type": "notice", "time": _time, "action": action, "messages": messages, "stacks": getStackTrace()});
+    send({ "type": "notice", "time": _time, "action": action, "messages": messages, "stacks": getStackTrace() });
 }
 
 
@@ -240,7 +240,7 @@ function getPackageManager() {
         var temp = this.getApplicationInfo(p1, p2);
         var string_to_recv;
         // 判断是否为自身应用，是的话不记录
-        send({"type": "app_name", "data": p1});
+        send({ "type": "app_name", "data": p1 });
 
         recv(function (received_json_object) {
             string_to_recv = received_json_object.my_data;
@@ -484,11 +484,53 @@ function getSMSManager() {
     }
 
 }
+/**
+ * // Gets a handle to the clipboard service.
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        // Creates a new text clip to put on the clipboard
+        clipboard.setText("---Hello clip---");
+        ClipData clip = ClipData.newPlainText("simple text", "Hello, World!");
+        clipboard.setPrimaryClip(clip);
+        CharSequence text = clipboard.getText();
+        Toast.makeText(this, "------------clip text:" + text, Toast.LENGTH_LONG).show();
+        // Examines the item on the clipboard. If getText() does not return null, the clip item contains the
+        // text. Assumes that this application can only handle one item at a time.
+        ClipData clipData = clipboard.getPrimaryClip();
+        if (clipData != null && clipboard.hasPrimaryClip() && clipboard.getPrimaryClip().getItemCount() > 0) {
+            ClipData.Item item = clipData.getItemAt(0);
+            // Gets the clipboard as text.
+            CharSequence pasteData = item.getText();
+            Toast.makeText(this, "------------clipdata:" + pasteData, Toast.LENGTH_LONG).show();
+        } else {
+            Log.d("debug", "------------Empty clipdata--------------------");
+            Toast.makeText(this, "------------Empty clipdata--------------------", Toast.LENGTH_LONG).show();
+        }
+ */
+function getClipboardManager() {
+    var ClipManager = Java.use("android.content.ClipboardManager");
+    ClipManager.getPrimaryClip.implementation = function () {
+        var res = this.getPrimaryClip();
+        var txt = res?.getItemAt(0)?.getText()
+        alertSend("读取剪贴板android.content.ClipboardManager", "读取PrimaryClip:" + txt);
+        return res;
+    }
+    ClipManager.getText.implementation = function () {
+        var txt = this.getText();
+        alertSend("读取剪贴板android.content.ClipboardManager", "读取txt:" + txt);
+        return txt;
+    }
+    var TextClipboard = Java.use("android.text.ClipboardManager");
+    TextClipboard.getText.implementation = function () {
+        var txt = this.getText();
+        alertSend("读取剪贴板android.text.ClipboardManager", "读取txt:" + txt);
+        return txt;
+    }
+}
 
 function main() {
     Java.perform(function () {
         console.log("合规检测敏感接口开始监控...");
-        send({"type": "isHook"})
+        send({ "type": "isHook" })
         checkRequestPermission();
         getPhoneState();
         getSystemProperties();
@@ -500,7 +542,8 @@ function main() {
         getNetwork();
         getBluetooth();
         getCidorLac();
-        getSMSManager();
+        // getSMSManager();
+        getClipboardManager();
     });
 }
 
