@@ -40,55 +40,59 @@ function checkRequestPermission() {
 // APP获取IMEI/IMSI
 function getPhoneState() {
     let key = "phone_state";
-    var TelephonyManager = Java.use("android.telephony.TelephonyManager");
+    try {
+        var TelephonyManager = Java.use("android.telephony.TelephonyManager");
 
-    // API level 26 获取单个IMEI的方法
-    TelephonyManager.getDeviceId.overload().implementation = function () {
-        var temp = this.getDeviceId();
-        alertSend(key, "获取IMEI", "获取的IMEI为: " + temp)
-        return temp;
-    };
+        // API level 26 获取单个IMEI的方法
+        TelephonyManager.getDeviceId.overload().implementation = function () {
+            var temp = this.getDeviceId();
+            alertSend(key, "获取IMEI", "获取的IMEI为: " + temp)
+            return temp;
+        };
 
-    //API level 26 获取多个IMEI的方法
-    TelephonyManager.getDeviceId.overload('int').implementation = function (p) {
-        var temp = this.getDeviceId(p);
-        alertSend(key, "获取IMEI", "获取(" + p + ")的IMEI为: " + temp);
-        return temp;
-    };
+        //API level 26 获取多个IMEI的方法
+        TelephonyManager.getDeviceId.overload('int').implementation = function (p) {
+            var temp = this.getDeviceId(p);
+            alertSend(key, "获取IMEI", "获取(" + p + ")的IMEI为: " + temp);
+            return temp;
+        };
 
-    //API LEVEL26以上的获取单个IMEI方法
-    TelephonyManager.getImei.overload().implementation = function () {
-        var temp = this.getImei();
-        alertSend(key, "获取IMEI", "获取的IMEI为: " + temp)
-        return temp;
-    };
+        //API LEVEL26以上的获取单个IMEI方法
+        TelephonyManager.getImei.overload().implementation = function () {
+            var temp = this.getImei();
+            alertSend(key, "获取IMEI", "获取的IMEI为: " + temp)
+            return temp;
+        };
 
-    // API LEVEL26以上的获取多个IMEI方法
-    TelephonyManager.getImei.overload('int').implementation = function (p) {
-        var temp = this.getImei(p);
-        alertSend(key, "获取IMEI", "获取(" + p + ")的IMEI为: " + temp);
-        return temp;
-    };
+        // API LEVEL26以上的获取多个IMEI方法
+        TelephonyManager.getImei.overload('int').implementation = function (p) {
+            var temp = this.getImei(p);
+            alertSend(key, "获取IMEI", "获取(" + p + ")的IMEI为: " + temp);
+            return temp;
+        };
 
-    //imsi/iccid
-    TelephonyManager.getSimSerialNumber.overload().implementation = function () {
-        var temp = this.getSimSerialNumber();
-        alertSend(key, "获取IMSI/iccid", "获取IMSI/iccid为(String): " + temp);
-        return temp;
-    };
+        //imsi/iccid
+        TelephonyManager.getSimSerialNumber.overload().implementation = function () {
+            var temp = this.getSimSerialNumber();
+            alertSend(key, "获取IMSI/iccid", "获取IMSI/iccid为(String): " + temp);
+            return temp;
+        };
 
-    //imsi
-    TelephonyManager.getSubscriberId.overload().implementation = function () {
-        var temp = this.getSubscriberId();
-        alertSend(key, "获取IMSI", "获取IMSI为(int): " + temp);
-        return temp;
-    }
+        //imsi
+        TelephonyManager.getSubscriberId.overload().implementation = function () {
+            var temp = this.getSubscriberId();
+            alertSend(key, "获取IMSI", "获取IMSI为(int): " + temp);
+            return temp;
+        }
 
-    //imsi/iccid
-    TelephonyManager.getSimSerialNumber.overload('int').implementation = function (p) {
-        var temp = this.getSimSerialNumber(p);
-        alertSend(key, "获取IMSI/iccid", "参数为：(" + p + "), 获取IMSI/iccid为(int): " + temp);
-        return temp;
+        //imsi/iccid
+        TelephonyManager.getSimSerialNumber.overload('int').implementation = function (p) {
+            var temp = this.getSimSerialNumber(p);
+            alertSend(key, "获取IMSI/iccid", "参数为：(" + p + "), 获取IMSI/iccid为(int): " + temp);
+            return temp;
+        }
+    } catch (error) {
+        console.log(error)
     }
 
 }
@@ -215,61 +219,65 @@ function getAndroidId() {
 //获取其他app信息
 function getPackageManager() {
     let key = "PackageManager";
-    var PackageManager = Java.use("android.content.pm.PackageManager");
-    var ApplicationPackageManager = Java.use("android.app.ApplicationPackageManager");
-    var ActivityManager = Java.use("android.app.ActivityManager");
+    try {
+        var PackageManager = Java.use("android.content.pm.PackageManager");
+        var ApplicationPackageManager = Java.use("android.app.ApplicationPackageManager");
+        var ActivityManager = Java.use("android.app.ActivityManager");
 
-    PackageManager.getInstalledPackages.overload('int').implementation = function (p1) {
-        var temp = this.getInstalledPackages(p1);
-        alertSend(key, "获取其他app信息", "1获取的数据为：" + temp);
-        return temp;
-    };
+        PackageManager.getInstalledPackages.overload('int').implementation = function (p1) {
+            var temp = this.getInstalledPackages(p1);
+            alertSend(key, "获取其他app信息", "1获取的数据为：" + temp);
+            return temp;
+        };
 
-    PackageManager.getInstalledApplications.overload('int').implementation = function (p1) {
-        var temp = this.getInstalledApplications(p1);
-        alertSend(key, "获取其他app信息", "getInstalledApplications获取的数据为：" + temp);
-        return temp;
-    };
+        PackageManager.getInstalledApplications.overload('int').implementation = function (p1) {
+            var temp = this.getInstalledApplications(p1);
+            alertSend(key, "获取其他app信息", "getInstalledApplications获取的数据为：" + temp);
+            return temp;
+        };
 
-    ApplicationPackageManager.getInstalledPackages.overload('int').implementation = function (p1) {
-        var temp = this.getInstalledPackages(p1);
-        alertSend(key, "获取其他app信息", "getInstalledPackages获取的数据为：" + temp);
-        return temp;
-    };
+        ApplicationPackageManager.getInstalledPackages.overload('int').implementation = function (p1) {
+            var temp = this.getInstalledPackages(p1);
+            alertSend(key, "获取其他app信息", "getInstalledPackages获取的数据为：" + temp);
+            return temp;
+        };
 
-    ApplicationPackageManager.getInstalledApplications.overload('int').implementation = function (p1) {
-        var temp = this.getInstalledApplications(p1);
-        alertSend(key, "获取其他app信息", "getInstalledApplications获取的数据为：" + temp);
-        return temp;
-    };
+        ApplicationPackageManager.getInstalledApplications.overload('int').implementation = function (p1) {
+            var temp = this.getInstalledApplications(p1);
+            alertSend(key, "获取其他app信息", "getInstalledApplications获取的数据为：" + temp);
+            return temp;
+        };
 
-    ApplicationPackageManager.queryIntentActivities.implementation = function (p1, p2) {
-        var temp = this.queryIntentActivities(p1, p2);
-        alertSend(key, "获取其他app信息", "参数为：" + p1 + p2 + "，queryIntentActivities获取的数据为：" + temp);
-        return temp;
-    };
+        ApplicationPackageManager.queryIntentActivities.implementation = function (p1, p2) {
+            var temp = this.queryIntentActivities(p1, p2);
+            alertSend(key, "获取其他app信息", "参数为：" + p1 + p2 + "，queryIntentActivities获取的数据为：" + temp);
+            return temp;
+        };
 
-    ApplicationPackageManager.getApplicationInfo.implementation = function (p1, p2) {
-        var temp = this.getApplicationInfo(p1, p2);
-        var string_to_recv;
-        // 判断是否为自身应用，是的话不记录
-        send({ "type": "app_name", "data": p1 });
+        ApplicationPackageManager.getApplicationInfo.implementation = function (p1, p2) {
+            var temp = this.getApplicationInfo(p1, p2);
+            var string_to_recv;
+            // 判断是否为自身应用，是的话不记录
+            send({ "type": "app_name", "data": p1 });
 
-        recv(function (received_json_object) {
-            string_to_recv = received_json_object.my_data;
-        }).wait();
+            recv(function (received_json_object) {
+                string_to_recv = received_json_object.my_data;
+            }).wait();
 
-        if (string_to_recv) {
-            alertSend(key, "获取其他app信息", "getApplicationInfo获取的数据为:" + temp);
-        }
-        return temp;
-    };
+            if (string_to_recv) {
+                alertSend(key, "获取其他app信息", "getApplicationInfo获取的数据为:" + temp);
+            }
+            return temp;
+        };
 
-    ActivityManager.getRunningAppProcesses.implementation = function () {
-        var temp = this.getRunningAppProcesses();
-        alertSend(key, "获取其他app信息", "获取了正在运行的App");
-        return temp;
-    };
+        ActivityManager.getRunningAppProcesses.implementation = function () {
+            var temp = this.getRunningAppProcesses();
+            alertSend(key, "获取其他app信息", "获取了正在运行的App");
+            return temp;
+        };
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 // 获取位置信息
@@ -470,39 +478,44 @@ function getCidorLac() {
 // 获取短信相关信息/发送短信
 function getSMSManager() {
     let key = "sms";
-    var SmsManager = Java.use("android.telephony.SmsManager");
+    try {
+        var SmsManager = Java.use("android.telephony.SmsManager");
 
-    SmsManager.sendTextMessageInternal.overload('java.lang.String', 'java.lang.String', 'java.lang.String',
-        'android.app.PendingIntent', 'android.app.PendingIntent', 'boolean',
-        'int', 'boolean', 'int').implementation = function (p1, p2, p3, p4, p5, p6, p7, p8, p9) {
-            var temp = this.sendTextMessageInternal(p1, p2, p3, p4, p5, p6, p7, p8, p9);
+        SmsManager.sendTextMessageInternal.overload('java.lang.String', 'java.lang.String', 'java.lang.String',
+            'android.app.PendingIntent', 'android.app.PendingIntent', 'boolean',
+            'int', 'boolean', 'int').implementation = function (p1, p2, p3, p4, p5, p6, p7, p8, p9) {
+                var temp = this.sendTextMessageInternal(p1, p2, p3, p4, p5, p6, p7, p8, p9);
+                alertSend(key, "获取短信信息", "发送短信 '" + p3 + "' to '" + p1 + "'");
+                return temp;
+            }
+
+        SmsManager.sendTextMessageWithSelfPermissions.implementation = function (p1, p2, p3, p4, p5, p6) {
+            var temp = this.sendTextMessageWithSelfPermissions(p1, p2, p3, p4, p5, p6);
             alertSend(key, "获取短信信息", "发送短信 '" + p3 + "' to '" + p1 + "'");
             return temp;
         }
 
-    SmsManager.sendTextMessageWithSelfPermissions.implementation = function (p1, p2, p3, p4, p5, p6) {
-        var temp = this.sendTextMessageWithSelfPermissions(p1, p2, p3, p4, p5, p6);
-        alertSend(key, "获取短信信息", "发送短信 '" + p3 + "' to '" + p1 + "'");
-        return temp;
+        SmsManager.sendMultipartTextMessageInternal.implementation = function (p1, p2, p3, p4, p5, p6, p7, p8, p9) {
+            var temp = this.sendMultipartTextMessageInternal(p1, p2, p3, p4, p5, p6, p7, p8, p9);
+            alertSend(key, "获取短信信息", "发送短信 '" + p3.toString() + "' to '" + p1 + "'");
+            return temp;
+        }
+
+        SmsManager.sendDataMessage.implementation = function (p1, p2, p3, p4, p5, p6) {
+            var temp = this.sendDataMessage(p1, p2, p3, p4, p5, p6);
+            alertSend(key, "获取短信信息", "发送短信 '" + p4.toString() + "' to '" + p1 + "'");
+            return temp;
+        }
+
+        SmsManager.sendDataMessageWithSelfPermissions.implementation = function (p1, p2, p3, p4, p5, p6) {
+            var temp = this.sendDataMessageWithSelfPermissions(p1, p2, p3, p4, p5, p6);
+            alertSend(key, "获取短信信息", "发送短信 '" + p4.toString() + "' to '" + p1 + "'");
+            return temp;
+        }
+    } catch (error) {
+        console.log(error)
     }
 
-    SmsManager.sendMultipartTextMessageInternal.implementation = function (p1, p2, p3, p4, p5, p6, p7, p8, p9) {
-        var temp = this.sendMultipartTextMessageInternal(p1, p2, p3, p4, p5, p6, p7, p8, p9);
-        alertSend(key, "获取短信信息", "发送短信 '" + p3.toString() + "' to '" + p1 + "'");
-        return temp;
-    }
-
-    SmsManager.sendDataMessage.implementation = function (p1, p2, p3, p4, p5, p6) {
-        var temp = this.sendDataMessage(p1, p2, p3, p4, p5, p6);
-        alertSend(key, "获取短信信息", "发送短信 '" + p4.toString() + "' to '" + p1 + "'");
-        return temp;
-    }
-
-    SmsManager.sendDataMessageWithSelfPermissions.implementation = function (p1, p2, p3, p4, p5, p6) {
-        var temp = this.sendDataMessageWithSelfPermissions(p1, p2, p3, p4, p5, p6);
-        alertSend(key, "获取短信信息", "发送短信 '" + p4.toString() + "' to '" + p1 + "'");
-        return temp;
-    }
 
 }
 /**
@@ -588,11 +601,28 @@ function getFlutterPluginMethod() {
 
 function getPlatfromChannelMethod() {
     let key = "flutter_plugin";
-    var MethodCallHandler = Java.use("io.flutter.embedding.engine.systemchannels.PlatformChannel$1");
-    MethodCallHandler.onMethodCall.implementation = function (methodCall, result) {
-        var res = this.onMethodCall(methodCall, result);
-        alertSend(key, "Flutter plugin method call", "Method:" + JSON.stringify(methodCall.method));
-        return res;
+    // try {
+    //     var MethodCallHandler = Java.use("io.flutter.embedding.engine.systemchannels.PlatformChannel$1");
+    //     MethodCallHandler.onMethodCall.implementation = function (methodCall, result) {
+    //         var res = this.onMethodCall(methodCall, result);
+    //         alertSend(key, "Flutter plugin method call", "Method:" + methodCall.name + " " + JSON.stringify(methodCall.method));
+    //         return res;
+    //     }
+    // } catch (error) {
+    //     console.log(error);
+    // }
+    try {
+        var IncomingMethodCallHandler = Java.use("io.flutter.plugin.common.MethodChannel$IncomingMethodCallHandler");
+        var JSONMethodCodec= Java.use("io.flutter.plugin.common.JSONMethodCodec");
+        IncomingMethodCallHandler.onMessage.implementation = function (message, reply) {
+            var res = this.onMessage(message, reply);
+            var field =JSONMethodCodec.class.getDeclaredField("INSTANCE")
+            // var MethodCall = JSONMethodCodec.INSTANCE.value.decodeMethodCall(message);
+            alertSend(key, "Flutter plugin IncomingMethodCallHandler onMessage", "Method:");
+            return res;
+        }
+    } catch (error) {
+        console.log(error)
     }
 }
 function getSendBroadcastMethod() {
@@ -650,22 +680,22 @@ function main() {
     Java.perform(function () {
         console.log("合规检测敏感接口开始监控...");
         send({ "type": "isHook" })
-        checkRequestPermission();
-        getPhoneState();
-        getSystemProperties();
-        getContentProvider();
-        getAndroidId();
+        // checkRequestPermission();
+        // getPhoneState();
+        // getSystemProperties();
+        // getContentProvider();
+        // getAndroidId();
         // getPackageManager();
-        getGSP();
-        getCamera();
-        getNetwork();
-        getBluetooth();
-        getCidorLac();
+        // getGSP();
+        // getCamera();
+        // getNetwork();
+        // getBluetooth();
+        // getCidorLac();
         // getSMSManager();
-        getClipboardManager();
+        // getClipboardManager();
         getPlatfromChannelMethod();
-        getSendBroadcastMethod();
-        getScanMediaMethod();
+        // getSendBroadcastMethod();
+        // getScanMediaMethod();
     });
 }
 
