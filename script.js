@@ -211,7 +211,16 @@ function getAndroidId() {
             return this.getString(p1, p2);
         }
         var temp = this.getString(p1, p2);
-        alertSend(_key, "获取Android ID ", "参数为：" + p2 + "，获取到的ID为：" + temp);
+        alertSend(_key, "获取Android ID Secure", "参数为：" + p2 + "，获取到的ID为：" + temp);
+        return temp;
+    }
+    var SettingSystem = Java.use("android.provider.Settings$System");
+    SettingSystem.getString.implementation = function (p1, p2) {
+        if (p2.indexOf("android_id") < 0) {
+            return this.getString(p1, p2);
+        }
+        var temp = this.getString(p1, p2);
+        alertSend(_key, "获取Android ID System", "参数为：" + p2 + "，获取到的ID为：" + temp);
         return temp;
     }
 }
@@ -681,10 +690,10 @@ function main() {
         console.log("合规检测敏感接口开始监控...");
         send({ "type": "isHook" })
         // checkRequestPermission();
-        // getPhoneState();
+        getPhoneState();
         // getSystemProperties();
         // getContentProvider();
-        // getAndroidId();
+        getAndroidId();
         // getPackageManager();
         // getGSP();
         // getCamera();
@@ -693,7 +702,7 @@ function main() {
         // getCidorLac();
         // getSMSManager();
         // getClipboardManager();
-        getPlatfromChannelMethod();
+        // getPlatfromChannelMethod();
         // getSendBroadcastMethod();
         // getScanMediaMethod();
     });
