@@ -224,6 +224,14 @@ function getAndroidId() {
         return temp;
     }
 }
+function  getInkeAtom(){
+    const _key = "inke_atom_key";
+    var TrackerAtomManager = Java.use("com.meelive.ingkee.tracker.TrackerAtomManager");
+    TrackerAtomManager.init.implementation = function (ctx){
+        alertSend(_key,"调用TrackerAtomManager.init(Context)");
+        this.init(ctx);
+    }
+}
 
 //获取其他app信息
 function getPackageManager() {
@@ -692,7 +700,7 @@ function main() {
         // checkRequestPermission();
         getPhoneState();
         // getSystemProperties();
-        // getContentProvider();
+        getContentProvider();
         getAndroidId();
         // getPackageManager();
         // getGSP();
@@ -701,10 +709,11 @@ function main() {
         // getBluetooth();
         // getCidorLac();
         // getSMSManager();
-        // getClipboardManager();
+        getClipboardManager();
         // getPlatfromChannelMethod();
         // getSendBroadcastMethod();
         // getScanMediaMethod();
+        getInkeAtom();
     });
 }
 
