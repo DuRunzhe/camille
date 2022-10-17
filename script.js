@@ -492,6 +492,22 @@ function getCidorLac() {
 
 }
 
+//获取传感器信息
+function getSensorManager(){
+    let key = "sensor";
+    try {
+        var SensorManager =Java.use("android.hardware.SensorManager");
+        SensorManager.getSensorList.overload('java.lang.Integer').implementation=function (p1){
+            var res = this.getSensorList(p1);
+            alertSend(key, "获取传感器列表信息", "参数" + p1 );
+            return res;
+        }
+        
+    } catch (error) {
+        
+    }
+}
+
 // 获取短信相关信息/发送短信
 function getSMSManager() {
     let key = "sms";
@@ -699,8 +715,8 @@ function main() {
         send({ "type": "isHook" })
         // checkRequestPermission();
         getPhoneState();
-        // getSystemProperties();
-        getContentProvider();
+        getSystemProperties();
+        // getContentProvider();
         getAndroidId();
         // getPackageManager();
         // getGSP();
@@ -709,11 +725,12 @@ function main() {
         // getBluetooth();
         // getCidorLac();
         // getSMSManager();
-        getClipboardManager();
+        // getClipboardManager();
         // getPlatfromChannelMethod();
         // getSendBroadcastMethod();
         // getScanMediaMethod();
         getInkeAtom();
+        getSensorManager()
     });
 }
 
