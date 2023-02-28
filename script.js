@@ -718,7 +718,7 @@ function main() {
         getSystemProperties();
         // getContentProvider();
         getAndroidId();
-        // getPackageManager();
+        getPackageManager();
         // getGSP();
         // getCamera();
         // getNetwork();
@@ -729,7 +729,7 @@ function main() {
         // getPlatfromChannelMethod();
         // getSendBroadcastMethod();
         // getScanMediaMethod();
-        getInkeAtom();
+        //getInkeAtom();
         getSensorManager()
     });
 }
